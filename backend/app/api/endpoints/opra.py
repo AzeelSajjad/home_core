@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from app.templates.opra_form import opra_form
+from app.template.opra_form import opra_form
 
 router = APIRouter()
 
