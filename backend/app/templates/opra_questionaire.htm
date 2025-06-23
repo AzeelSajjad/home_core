@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width", initial-scale=1.0">
+    <title>OPRA Request Form Questionaire</title>
+</head>
+<body>
+    <h1>OPRA Request Form Questionaire</h1>
+    <form method="POST" action="/submit-questionaire">
+        <fieldset>
+            <label for="first_name">First Name:</label>
+            <input type="text" id="first_name" name="first_name" required>
+
+            <label for="middle_initial">MI:</label>
+            <input type="text" id="middle_initial" name="middle_initial" max_length="1">
+
+            <label for="last_name">Last Name:</label>
+            <input type="text" id="last_name" name="last_name" required>
+
+            <label for="email_address">Email Address:</label>
+            <input type="text" id="email_address" name="email_address" required>
+
+            <label for="mailing_address">Mailing Address:</label>
+            <input type="text" id="mailing_address" name="mailing_address" required>
+        </fieldset>
+</body>
