@@ -4,7 +4,17 @@ import os
 
 def fill_opra_form(data: OPRAQuestionnaireData):
     field_mapping = {
-        'First Name': 'first_name'
+        'First Name': 'first_name',
+        'MI': 'mi',
+        'Last Name': 'last_name',
+        'E-mail Address': 'email',
+        'Mailing Address': 'address',
+        'City': 'city',
+        'State': 'state',
+        'Zip': 'zip_code',
+        'Telephone': 'phone',
+        'Fax': 'fax',
+        'Record Request Information': 'request_type'
     }
     BASE_DIR = os.path.dirname(__file__)
     template_path = os.path.join(BASE_DIR, "..", "templates", "opra.pdf")
