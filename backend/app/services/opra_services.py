@@ -1,5 +1,7 @@
 from pdfrw import PdfReader, PdfWriter, PdfDict, PdfName
 from models.opra_model import OPRAQuestionnaireData
+from models.opra_db_model import OPRARequest
+from fastapi import HTTPException
 import os
 
 def fill_opra_form(data: OPRAQuestionnaireData):
@@ -31,3 +33,18 @@ def fill_opra_form(data: OPRAQuestionnaireData):
     writer = PdfWriter()
     writer.write('filled_opra_form.pdf', pdf)
 
+def process_questionnaire(questionnaire_data: OPRAQuestionnaireData):
+    optional_fields=['mi', 'fax']
+    for field_name, value in questionnaire_data.dict().items():
+        if field_name in optional_fields:
+            continue
+        if value is None or (isinstance(value, str) and value.strip() == ""):
+            raise HTTPException(status_code=400, detail=f"{field_name} is required")
+    questionnaire_data.phone = questionnaire_data.phone.replace('-', '').replace(' ', '')
+    questionnaire_data.state = questionnaire_data.state.upper().strip()
+    
+def save_db(data: OPRAQuestionnaireData, db):
+    record = OPRARequest(**data.dict())
+    db.add(record)
+    db.commit()
+    db.refresh(record)

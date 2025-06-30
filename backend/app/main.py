@@ -1,3 +1,5 @@
 from fastapi import FastAPI
+from database import engine
+from models.opra_db_model import OPRARequest
 
-app = FastAPI()
+OPRARequest.metadata.create_all(bind=engine)
