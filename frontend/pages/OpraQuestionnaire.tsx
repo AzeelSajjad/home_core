@@ -13,7 +13,23 @@ const FirstName = () => {
     )
 }
 
+const MiddleInitial = () => {
+    const [middleInitial, setMiddleInitial] = useState("")
+    return (
+        <>
+        <label>What is your middle initial?(If you do not have one, leave it blank.)</label>
+        <input type='text' value={middleInitial} onChange={(e) => setMiddleInitial(e.target.value)}/>
+        </>
+    )
+}
+
 const LastName = () => {
     const [lastName, setLastName] = useState("")
-    
+    return (
+        <>
+        <label>What is your last name?</label>
+        <input type='text' value={lastName} onChange={(e) => setLastName(e.target.value)}/> 
+        </>
+    )
 }
+
