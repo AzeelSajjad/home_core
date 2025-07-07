@@ -25,7 +25,7 @@ const OpraQuestionnaire = () => {
         }));
     }
 
-    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault()
         try {
             const result = await submitOpraForm(formData)
