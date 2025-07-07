@@ -1,113 +1,112 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+//made one entire component because using multiple useStates would not allow for the data to be handled when the form was submitted
+const OpraQuestionnaire = () => {
+    const [formData, setFormData] = useState({
+        firstName: '',
+        middleInitial: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        fax: '',
+        requestType: ''
+    })
 
-//making components of the questionnaire
-const FirstName = () => {
-    const [firstName, setFirstName] = useState("")
-    return (
-        <>
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target
+        setFormData(prev => ({
+          ...prev,
+          [name]: value,
+        }));
+    }
+
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault()
+        console.log(formData)
+    }
+
+    <form onSubmit={handleSubmit}>
         <label>What is your first name?</label>
-        <input type='text' value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
-        </>
-    )
-}
-
-const MiddleInitial = () => {
-    const [middleInitial, setMiddleInitial] = useState("")
-    return (
-        <>
-        <label>What is your middle initial?(If you do not have one, leave it blank.)</label>
-        <input type='text' value={middleInitial} onChange={(e) => setMiddleInitial(e.target.value)}/>
-        </>
-    )
-}
-
-const LastName = () => {
-    const [lastName, setLastName] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="firstName"
+          value={formData.firstName}
+          onChange={handleChange}
+        />
+        <label>What is your middle initial? (If you do not have one, leave it blank.)</label>
+        <input
+          type="text"
+          name="middleInitial"
+          value={formData.middleInitial}
+          onChange={handleChange}
+        />
         <label>What is your last name?</label>
-        <input type='text' value={lastName} onChange={(e) => setLastName(e.target.value)}/> 
-        </>
-    )
-}
-
-const Email = () => {
-    const [email, setEmail] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="lastName"
+          value={formData.lastName}
+          onChange={handleChange}
+        />
         <label>What is your email?</label>
-        <input type='text' value={email} onChange={(e) => setEmail(e.target.value)} />
-        </>
-    )
-}
-
-const Phone = () => {
-    const [phone, setPhone] = useState("")
-    return (
-        <>
+        <input
+          type="email"
+          name="email"
+          value={formData.email}
+          onChange={handleChange}
+        />
         <label>What is your phone number?</label>
-        <input type='text' value={phone} onChange={(e) => setPhone(e.target.value)} />
-        </>
-    )
-}
-
-const Address = () => {
-    const [address, setAddress] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+        />
         <label>What is your address?</label>
-        <input type='text' value={address} onChange={(e) => setAddress(e.target.value)} />
-        </>
-    )
-}
-
-const City = () => {
-    const [city, setCity] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="address"
+          value={formData.address}
+          onChange={handleChange}
+        />
         <label>What is your city?</label>
-        <input type='text' value={city} onChange={(e) => setCity(e.target.value)} />
-        </>
-    )
-}
-
-const State = () => {
-    const [state, setState] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="city"
+          value={formData.city}
+          onChange={handleChange}
+        />
         <label>What is your state?</label>
-        <input type='text' value={state} onChange={(e) => setState(e.target.value)} />
-        </>
-    )
-}
-
-const ZipCode = () => {
-    const [zipCode, setZipCode] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="state"
+          value={formData.state}
+          onChange={handleChange}
+        />
         <label>What is your zip code?</label>
-        <input type='text' value={zipCode} onChange={(e) => setZipCode(e.target.value)} />
-        </>
-    )
-}
-
-const Fax = () => {
-    const [fax, setFax] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="zipCode"
+          value={formData.zipCode}
+          onChange={handleChange}
+        />
         <label>What is your fax?</label>
-        <input type='text' value={fax} onChange={(e) => setFax(e.target.value)} />
-        </>
-    )
-}
-
-const RequestType = () => {
-    const [requestType, setRequestType] = useState("")
-    return (
-        <>
+        <input
+          type="text"
+          name="fax"
+          value={formData.fax}
+          onChange={handleChange}
+        />
         <label>What is the request you are making?</label>
-        <input type='text' value={requestType} onChange={(e) => setRequestType(e.target.value)} />
-        </>
-    )
+        <input
+          type="text"
+          name="requestType"
+          value={formData.requestType}
+          onChange={handleChange}
+        />
+        <button type="submit">Submit</button>
+    </form>
 }
