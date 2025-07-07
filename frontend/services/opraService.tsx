@@ -16,7 +16,7 @@ interface OpraFormData {
 
 export async function submitOpraForm(data: OpraFormData) {
     try {
-        const response = await axios.post('http://localhost:8001/api/submit-opra', data)
+        const response = await axios.post('http://localhost:8000/api/submit-opra', data)
         return response
     } catch (error) {
         console.error('Error submitting form:', error)
