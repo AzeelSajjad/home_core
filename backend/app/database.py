@@ -1,3 +1,4 @@
+'''
 from sqlalchemy import create_engine
 import os
 from dotenv import load_dotenv, find_dotenv
@@ -16,3 +17,4 @@ def get_db():
         yield db
     finally:
         db.close()
+'''

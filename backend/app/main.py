@@ -1,3 +1,4 @@
+'''
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 import os
@@ -102,3 +103,4 @@ async def test_table_structure():
         return {"columns": columns}
     except Exception as e:
         return {"error": f"Failed to get table structure: {str(e)}"}
+'''

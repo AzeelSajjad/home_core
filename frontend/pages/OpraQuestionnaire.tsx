@@ -1,3 +1,5 @@
+/*
+
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { submitOpraForm } from '../services/opraService'
@@ -151,3 +153,5 @@ const OpraQuestionnaire = () => {
 }
 
 export default OpraQuestionnaire
+
+*/

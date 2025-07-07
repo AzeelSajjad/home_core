@@ -1,3 +1,4 @@
+'''
 from sqlalchemy import Column, String, Integer
 from ..database import Base
 
@@ -16,3 +17,4 @@ class OPRARequest(Base):
     phone = Column(String, name="phone")
     fax = Column(String, name="fax", nullable=True)
     request_type = Column(String, name="request_type")
+'''
