@@ -83,3 +83,22 @@ async def test_template():
         "templates_dir_exists": templates_dir_exists,
         "templates_dir_path": templates_dir
     }
+    
+@app.get("/test-table-structure")
+async def test_table_structure():
+    from .database import get_db
+    
+    try:
+        db = next(get_db())
+        # Query to get column information
+        result = db.execute(text("""
+            SELECT column_name, data_type 
+            FROM information_schema.columns 
+            WHERE table_name = 'opra_requests'
+            ORDER BY ordinal_position
+        """))
+        columns = [{"name": row[0], "type": row[1]} for row in result.fetchall()]
+        db.close()
+        return {"columns": columns}
+    except Exception as e:
+        return {"error": f"Failed to get table structure: {str(e)}"}
