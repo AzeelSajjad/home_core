@@ -20,7 +20,6 @@ async def submit_opra(data: OPRAQuestionnaireData, db: Session = Depends(get_db)
 
         fill_opra_form(data, output_path)
 
-        # Return JSON response with filename instead of FileResponse
         return {"filename": filename, "message": "OPRA form processed successfully"}
     except Exception as e:
         print(f"Error processing OPRA submission: {e}")
@@ -28,7 +27,6 @@ async def submit_opra(data: OPRAQuestionnaireData, db: Session = Depends(get_db)
 
 @router.get("/pdf/{filename}")
 async def get_pdf(filename: str):
-    """Serve PDF files by filename"""
     try:
         file_path = os.path.join("filled_pdfs", filename)
         if not os.path.exists(file_path):
