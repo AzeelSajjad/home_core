@@ -2,14 +2,14 @@ from pydantic import BaseModel
 from typing import Optional
 
 class OPRAQuestionnaireData(BaseModel):
-    first_name: str
-    mi: Optional[str] = None
-    last_name: str
+    firstName: str
+    middleInitial: Optional[str] = None
+    lastName: str
     email: str
     address: str
     city: str
     state: str
-    zip_code: str
+    zipCode: str
     phone: str
-    fax:  Optional[str] = None
-    request_type: str
+    fax: Optional[str] = None
+    requestType: str

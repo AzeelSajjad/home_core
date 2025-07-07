@@ -1,23 +1,23 @@
 from pdfrw import PdfReader, PdfWriter, PdfDict, PdfName
-from models.opra_model import OPRAQuestionnaireData
-from models.opra_db_model import OPRARequest
+from ..models.opra_model import OPRAQuestionnaireData
+from ..models.opra_db_model import OPRARequest
 from fastapi import HTTPException
 import os
 
 #function that fills the opra form with the user data that was retrieved from the questionnaire
 def fill_opra_form(data: OPRAQuestionnaireData, output_path: str = "filled_opra.pdf"):
     field_mapping = {
-        'First Name': 'first_name',
-        'MI': 'mi',
-        'Last Name': 'last_name',
+        'First Name': 'firstName',
+        'MI': 'middleInitial',
+        'Last Name': 'lastName',
         'E-mail Address': 'email',
         'Mailing Address': 'address',
         'City': 'city',
         'State': 'state',
-        'Zip': 'zip_code',
+        'Zip': 'zipCode',
         'Telephone': 'phone',
         'Fax': 'fax',
-        'Record Request Information': 'request_type'
+        'Record Request Information': 'requestType'
     }
     BASE_DIR = os.path.dirname(__file__)
     template_path = os.path.join(BASE_DIR, "..", "templates", "opra.pdf")
@@ -36,7 +36,7 @@ def fill_opra_form(data: OPRAQuestionnaireData, output_path: str = "filled_opra.
 
 #function that processes the questionnaire data
 def process_questionnaire(questionnaire_data: OPRAQuestionnaireData):
-    optional_fields=['mi', 'fax']
+    optional_fields=['middleInitial', 'fax']
     for field_name, value in questionnaire_data.dict().items():
         if field_name in optional_fields:
             continue

@@ -1,6 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import OpraQuestionnaire from '../pages/OpraQuestionnaire'
-
+import PdfViewer from '../components/PdfViewer'
 
 function App() {
   return (
