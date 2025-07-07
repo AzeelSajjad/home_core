@@ -4,7 +4,8 @@ from models.opra_db_model import OPRARequest
 from fastapi import HTTPException
 import os
 
-def fill_opra_form(data: OPRAQuestionnaireData):
+#function that fills the opra form with the user data that was retrieved from the questionnaire
+def fill_opra_form(data: OPRAQuestionnaireData, output_path: str = "filled_opra.pdf"):
     field_mapping = {
         'First Name': 'first_name',
         'MI': 'mi',
@@ -31,8 +32,9 @@ def fill_opra_form(data: OPRAQuestionnaireData):
             if value:
                 field.update(PdfDict(V=value, AP=''))
     writer = PdfWriter()
-    writer.write('filled_opra_form.pdf', pdf)
+    writer.write(output_path, pdf)
 
+#function that processes the questionnaire data
 def process_questionnaire(questionnaire_data: OPRAQuestionnaireData):
     optional_fields=['mi', 'fax']
     for field_name, value in questionnaire_data.dict().items():
