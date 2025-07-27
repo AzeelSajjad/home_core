@@ -18,8 +18,8 @@ const RentCalculator = () => {
     setIsLoading(true);
     
     try {
-      // Replace with your actual API endpoint
-      const response = await fetch('/api/rent-calculate', {
+      // FastAPI endpoint URL (adjust port if needed)
+      const response = await fetch('http://localhost:8000/rent-calculate', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,6 +29,10 @@ const RentCalculator = () => {
           new_rent: parseFloat(newRent),
         }),
       });
+      
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
       
       const data: RentResult = await response.json();
       setResult(data);

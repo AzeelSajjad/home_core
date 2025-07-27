@@ -104,3 +104,29 @@ async def test_table_structure():
     except Exception as e:
         return {"error": f"Failed to get table structure: {str(e)}"}
 '''
+
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from .api.endpoints.rent_api import router as rent_router  
+
+# Create FastAPI app
+app = FastAPI(
+    title="Rent Calculator API",
+    description="API to calculate if rent increases exceed legal limits",
+    version="1.0.0"
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",    # React (Create React App)
+        "http://localhost:5173",    # Vite dev server
+        "http://127.0.0.1:3000",
+        "http://127.0.0.1:5173"
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+app.include_router(rent_router, tags=["rent"])
