@@ -1,13 +1,12 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
-import OpraQuestionnaire from '../pages/OpraQuestionnaire'
-import PdfViewer from '../components/PdfViewer'
+import RentCalculator from '../pages/RentCalculator'
+
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<OpraQuestionnaire />} />
-        <Route path="/view-pdf/:filename" element={<PdfViewer />} />
+        <Route path="/" element={<RentCalculator />} />
       </Routes>
     </Router>
   )
