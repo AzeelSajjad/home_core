@@ -6,5 +6,5 @@ router = APIRouter()
 
 @router.post("/rent-calculate")
 def rent_calculator_endpoint(request: RentRequest):
-    result = rent_calculator(request.old_rent, request.new_rent)
+    result = rent_calculator(request.old_rent, request.new_rent, request.last_change_date)
     return result
