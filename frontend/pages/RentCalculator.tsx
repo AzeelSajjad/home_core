@@ -1,17 +1,14 @@
 import React, { useState } from 'react';
-import { DollarSign, AlertTriangle, CheckCircle, ArrowRight, Calendar } from 'lucide-react';
+import { DollarSign, AlertTriangle, CheckCircle, ArrowRight } from 'lucide-react';
 
 interface RentResult {
-  overcharged: boolean | null;
+  overcharged: boolean;
   message: string;
   overcharge_amount?: number;
-  months_since_change?: number;
-  error?: boolean;
 }
 
 const RentCalculator = () => {
   const [step, setStep] = useState(1);
-  const [lastChangeDate, setLastChangeDate] = useState('');
   const [oldRent, setOldRent] = useState('');
   const [newRent, setNewRent] = useState('');
   const [result, setResult] = useState<RentResult | null>(null);
@@ -30,7 +27,6 @@ const RentCalculator = () => {
         body: JSON.stringify({
           old_rent: parseFloat(oldRent),
           new_rent: parseFloat(newRent),
-          last_change_date: lastChangeDate,
         }),
       });
       
@@ -40,7 +36,7 @@ const RentCalculator = () => {
       
       const data: RentResult = await response.json();
       setResult(data);
-      setStep(5);
+      setStep(4);
     } catch (error) {
       console.error('Error calculating rent:', error);
       alert('Error calculating rent. Please try again.');
@@ -50,30 +46,26 @@ const RentCalculator = () => {
   };
 
   const nextStep = () => {
-    if (step === 1 && lastChangeDate) {
+    if (step === 1 && oldRent) {
       setStep(2);
-    } else if (step === 2 && oldRent) {
+    } else if (step === 2 && newRent) {
       setStep(3);
-    } else if (step === 3 && newRent) {
-      setStep(4);
-    } else if (step === 4) {
+    } else if (step === 3) {
       calculateRent();
     }
   };
 
   const resetCalculator = () => {
     setStep(1);
-    setLastChangeDate('');
     setOldRent('');
     setNewRent('');
     setResult(null);
   };
 
   const canProceed = () => {
-    if (step === 1) return lastChangeDate !== '';
-    if (step === 2) return oldRent !== '';
-    if (step === 3) return newRent !== '';
-    if (step === 4) return true;
+    if (step === 1) return oldRent !== '';
+    if (step === 2) return newRent !== '';
+    if (step === 3) return true;
     return false;
   };
 
@@ -135,33 +127,8 @@ const RentCalculator = () => {
             </div>
 
             <div className="space-y-6">
-              {/* Step 1: Last Change Date */}
+              {/* Step 1: Old Rent */}
               {step === 1 && (
-                <div style={fadeInStyle}>
-                  <label className="block text-lg font-semibold text-gray-900 mb-3" style={{ 
-                    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' 
-                  }}>
-                    When was your rent last changed?
-                  </label>
-                  <div className="relative">
-                    <Calendar className="absolute left-3 top-4 h-6 w-6 text-gray-400" />
-                    <input
-                      type="date"
-                      value={lastChangeDate}
-                      onChange={(e) => setLastChangeDate(e.target.value)}
-                      className="w-full pl-12 pr-4 py-4 text-xl border-2 border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
-                      style={{ fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' }}
-                      autoFocus
-                    />
-                  </div>
-                  <p className="text-sm text-gray-600 mt-2">
-                    Note: You can only check for overcharges if the rent was changed within the last 14 months.
-                  </p>
-                </div>
-              )}
-
-              {/* Step 2: Old Rent */}
-              {step === 2 && (
                 <div style={fadeInStyle}>
                   <label className="block text-lg font-semibold text-gray-900 mb-3" style={{ 
                     fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' 
@@ -185,11 +152,11 @@ const RentCalculator = () => {
                 </div>
               )}
 
-              {/* Step 3: New Rent */}
-              {step === 3 && (
+              {/* Step 2: New Rent */}
+              {step === 2 && (
                 <div style={fadeInStyle}>
                   <label className="block text-lg font-semibold text-gray-900 mb-3" style={{ 
-                    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segue UI", sans-serif' 
+                    fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' 
                   }}>
                     What is your new rent?
                   </label>
@@ -210,8 +177,8 @@ const RentCalculator = () => {
                 </div>
               )}
 
-              {/* Step 4: Confirmation */}
-              {step === 4 && (
+              {/* Step 3: Confirmation */}
+              {step === 3 && (
                 <div style={fadeInStyle}>
                   <div className="bg-blue-50 rounded-lg p-6 mb-6">
                     <h3 className="text-lg font-semibold text-gray-900 mb-4" style={{ 
@@ -222,7 +189,6 @@ const RentCalculator = () => {
                     <div className="space-y-2 text-gray-700" style={{ 
                       fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif' 
                     }}>
-                      <p>Last change date: <span className="font-semibold">{lastChangeDate}</span></p>
                       <p>Old rent: <span className="font-semibold">${parseFloat(oldRent).toFixed(2)}</span></p>
                       <p>New rent: <span className="font-semibold">${parseFloat(newRent).toFixed(2)}</span></p>
                       <p className="text-sm text-gray-600">Legal limit (4% CPI): <span className="font-semibold">${(parseFloat(oldRent) * 1.04).toFixed(2)}</span></p>
@@ -231,39 +197,15 @@ const RentCalculator = () => {
                 </div>
               )}
 
-              {/* Step 5: Results */}
-              {step === 5 && result && (
+              {/* Step 4: Results */}
+              {step === 4 && result && (
                 <div style={fadeInStyle}>
                   <div className={`rounded-lg p-6 text-center ${
-                    result.error
-                      ? 'bg-yellow-50 border-2 border-yellow-200'
-                      : result.overcharged === null
-                      ? 'bg-yellow-50 border-2 border-yellow-200'
-                      : result.overcharged 
+                    result.overcharged 
                       ? 'bg-red-50 border-2 border-red-200' 
                       : 'bg-green-50 border-2 border-green-200'
                   }`}>
-                    {result.error || result.overcharged === null ? (
-                      <>
-                        <AlertTriangle className="h-16 w-16 text-yellow-600 mx-auto mb-4" />
-                        <h3 className="text-2xl font-bold text-yellow-800 mb-2" style={{ 
-                          fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
-                          fontWeight: '700'
-                        }}>
-                          Cannot Check
-                        </h3>
-                        <p className="text-lg text-yellow-700" style={{ 
-                          fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
-                        }}>
-                          {result.message}
-                        </p>
-                        {result.months_since_change && (
-                          <p className="text-sm text-yellow-600 mt-2">
-                            {result.months_since_change} months since last change
-                          </p>
-                        )}
-                      </>
-                    ) : result.overcharged ? (
+                    {result.overcharged ? (
                       <>
                         <AlertTriangle className="h-16 w-16 text-red-600 mx-auto mb-4" />
                         <h3 className="text-2xl font-bold text-red-800 mb-2" style={{ 
@@ -277,11 +219,6 @@ const RentCalculator = () => {
                             fontFamily: 'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif'
                           }}>
                             ${Math.abs(result.overcharge_amount).toFixed(2)} over the legal limit per month
-                          </p>
-                        )}
-                        {result.months_since_change && (
-                          <p className="text-sm text-red-600 mt-2">
-                            {result.months_since_change} months since last change
                           </p>
                         )}
                       </>
@@ -299,11 +236,6 @@ const RentCalculator = () => {
                         }}>
                           Within the 4% CPI limit
                         </p>
-                        {result.months_since_change && (
-                          <p className="text-sm text-green-600 mt-2">
-                            {result.months_since_change} months since last change
-                          </p>
-                        )}
                       </>
                     )}
                   </div>
@@ -311,7 +243,7 @@ const RentCalculator = () => {
               )}
 
               {/* Action Button */}
-              {step < 5 ? (
+              {step < 4 ? (
                 <button
                   onClick={nextStep}
                   disabled={!canProceed() || isLoading}
@@ -324,7 +256,12 @@ const RentCalculator = () => {
                 >
                   {isLoading ? (
                     'CHECKING...'
-                  ) : step < 4 ? (
+                  ) : step === 1 ? (
+                    <>
+                      NEXT
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </>
+                  ) : step === 2 ? (
                     <>
                       NEXT
                       <ArrowRight className="ml-2 h-4 w-4" />
