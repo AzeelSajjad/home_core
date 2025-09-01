@@ -1,4 +1,5 @@
-from datetime import datetime 
+from datetime import datetime
+from models.cpi_data import cpi_rates
 
 def rent_calculator(old_rent, new_rent, date: datetime, cpi_rates):
     year = date.year
